@@ -1,14 +1,43 @@
-/* .tela{
+.tela{
     display: flex;
     background-color: #262626;
-} */
-
+}
+/* calendario */
 .calendar{
     height: 100vh;
     width: 80%;
     overflow: auto;
 }
 
+.toolbar{
+    height: 200vh;
+    width: 20%;
+    min-width: 300px;
+    color: #ffffff;
+    background-color: #1a1a1a;
+    border-right: 1px solid #bbb;
+}
+
+/*HEADER MOD*/
+.toolbar-container{
+    display: flex;
+    height: 10vh;
+    align-items: center;
+    padding-left: 50px;
+}
+.mesAno{  /*div q aparece o mes */
+    width: 50%;
+    color: #f3f3f3;
+    justify-content: flex-start;
+}
+.dirtop{
+    width: 50%;
+    justify-content: end;
+    display: flex;
+    align-items: center;
+    padding-right: 50px;
+}
+/* MODAL */
 .modal{
     position: fixed;
     top: 0;
@@ -28,4 +57,92 @@
     border-radius: 6px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.027);
     z-index: 100000;
+}
+
+/*Header e botoes*/
+.rbc-toolbar{ /*parte de cima onde fica o mes e as outras coisas*/
+    height: 10vh;
+    color: #bbb;
+    font-size: 25px;
+}
+
+.rbc-btn-group > button{/* aqui tá alterando os botoes que escolhe o mes dia etc*/
+    border: 0;
+}
+.rbc-toolbar button{
+    color: #cecece;
+    border: 1px solid #cccccc4f;
+}
+
+.rbc-toolbar button:active,/* aqui tá alterando os botoes quando tiver ativado*/
+.rbc-toolbar button.rbc-active{
+    background-color: #56565686;
+    border-color: #bbb;
+}
+
+/*Corpo*/
+/*Linhas*/
+.rbc-month-view{/* aqui tá alterando a vista do calendário */
+    border-color: #eeeeee5f;
+}
+.rbc-month-row+ .rbc-month-row {/* aqui tá alterando a linha q divide os meses, precisa colocar o + se n, n funciona */
+    border-color: #dddddd73;
+}
+.rbc-day-bg + .rbc-day-bg {/* aqui tá alterando a linha q divide os dias, precisa colocar o + se n, n funciona */
+    border-color: #dddddd73;
+}
+
+/*Mes*/
+.rbc-header{
+    color: #eeeeeeee;
+    border-color: #dddddd73;
+}
+.rbc-header + .rbc-header{/* aqui tá alterando os dias do mes, segunda terça etc */
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-color: #dddddd73;
+}
+.rbc-off-range-bg{
+    background-color: #313131;
+}
+.rbc-today{
+    background-color: #1a1a1a;
+}
+.rbc-button-link{
+    margin: 5px;
+    font-size: 15px;
+    color: #eeeeeee5;
+}
+.rbc-off-range .rbc-button-link{
+    color: #eeeeee37;
+}
+.rbc-now .rbc-button-link{
+    background-color: #f15550;
+    color: #ffffff;
+    border-radius: 2px;
+    padding-left: 2px;
+    padding-right: 2px;
+    margin: 5px;
+    font-size: 16px;
+}
+.rbc-time-content,.rbc-time-content > .rbc-day-slot,.rbc-timeslot-group, .rbc-time-slot{/* aqui tá alterando as linhas das hhoras */
+    color: #bbb;
+    border-color: #b0b0b036;
+}
+.rbc-day-slot .rbc-time-slot{
+    border-top: 1px solid #c8c8c80a;
+}
+
+/*Agenda a que aparece as atividades alinhadas*/
+.rbc-agenda-content, .rbc-agenda-view{
+    color: #aaa;
+}
+.rbc-agenda-date-cell, .rbc-agenda-time-cell{
+    background-color: #262626;
+}
+.rbc-agenda-event-cell{
+    border-radius: 20px;
+    font-weight: bold;
+    color: #e0e0e0;
 }

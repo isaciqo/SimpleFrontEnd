@@ -5,6 +5,10 @@ import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.css';
 import './components/calendarioCss.css';
+import Adicionar from './components/adicionar/Adicionar';
+import CustomTollbar from './components/CustomCalendar/CustomTollbar';
+import axios from 'axios';
+
 
 import eventosPadrao from './components/Eventos/EventosPadrao'
 import EventModal from './components/EventModal';
@@ -22,6 +26,53 @@ function Calendario (){
     const handleEventClose = () => {
         setEventoSelecionado(null)
     }
+
+    const eventStyle = (event) => ({
+        style:{
+            backgroundColor: event.color
+        }
+    })
+
+    const handleAdicionar = async (novoEvento) => {
+        //Logica do banco
+        const user_id = localStorage.getItem('user_id');
+        const calendar_id = localStorage.getItem('calendar_id');
+        const token = localStorage.getItem('token');
+        console.log('antes do post ------------', user_id)
+        console.log('antes do post calendar_id------------', calendar_id)
+        const response = await axios.post(`http://localhost:3030/users/updateCalendar/${calendar_id}`, {
+            calendarInformation:[{
+                user: user_id,
+                name: 'nome do usuário',
+                firstDay: novoEvento.startDate,
+                lastDay: novoEvento.endDate,
+                status: 'novoEvento.color'
+            }]
+        });
+        console.log('post response ------------', response)
+        setEventos([...eventos,{...novoEvento,id:eventos.length + 1}]);
+
+
+    };
+
+    const handleEventDelete= (eventId) =>{
+        //Logica do banco
+       const updatedEvents = eventos.filter((event) => event.id !== eventId)
+       setEventos(updatedEvents);
+       setEventoSelecionado(null);
+   };
+
+   const handleEventUpdate = (updatedEvent) =>{
+        //Logica do banco
+       const updatedEvents = eventos.map((event) =>{
+           if(event.id === updatedEvent.id){
+               return updatedEvent;
+           }
+           return event;
+       });
+       setEventos(updatedEvents);
+       setEventoSelecionado(null);
+   }
 
     const onEventDrop = (data) => {
         
@@ -58,7 +109,11 @@ function Calendario (){
     }
 
     return(
-        <div>
+        <div className='tela'>
+            <div className="toolbar">
+                <p> Ferramentas </p>
+                    <Adicionar onAdicionar={ handleAdicionar}/>
+            </div>
             <DragAndDropCalendar
                 defaultDate={moment().toDate()}
                 defaultView='month'
@@ -69,16 +124,24 @@ function Calendario (){
                 onEventResize={onEventResize}
                 onSelectEvent={handleEventClick}
                 className='calendar'
+                components={{
+                    toolbar: CustomTollbar
+                }}
+                eventPropGetter={eventStyle}
 
             />
         { eventoSelecionado && (
-            <EventModal 
+            <EventModal
                 evento = { eventoSelecionado}
                 onClose = {handleEventClose}
+                onDelete = {handleEventDelete}
+                onUpdate = {handleEventUpdate}
             />
         )}
         </div>
     )
 }
+
+
 
 export default Calendario

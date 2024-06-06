@@ -13,7 +13,16 @@ const eventosPadrão = [{
     start: new Date(2024,5,1,10,0),
     end: new Date(2024,5,3,10,0),
     desc:'segunda atividade',
-    color:'red',
+    color:'green',
+    type:'atividade'
+},
+{
+    id: 3,  
+    title:'atividade 3',
+    start: new Date(2024,5,1,10,0),
+    end: new Date(2024,5,3,10,0),
+    desc:'segunda atividade',
+    color:'brow',
     type:'atividade'
 }]
 

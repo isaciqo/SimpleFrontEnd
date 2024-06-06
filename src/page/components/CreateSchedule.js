@@ -12,7 +12,7 @@ const CreateSchedule = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:5000/create-schedule', {
+      const response = await axios.post('http://localhost:3030/users/createCalendar', {
         name,
         email,
         startDate,
