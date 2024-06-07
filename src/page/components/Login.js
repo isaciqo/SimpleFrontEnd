@@ -18,7 +18,7 @@ const Login = () => {
       localStorage.setItem('schedulesCreated', response.data.schedulesCreated);
       localStorage.setItem('schedulesJoined', response.data.schedulesJoined);
       console.log('response', response.data)
-      history.push('/Calendario'); // Adicione esta linha
+      history.push('/CreateAgenda'); // Adicione esta linha
     } catch (error) {
       setMessage('Login failed');
     }

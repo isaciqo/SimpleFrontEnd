@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
@@ -15,9 +15,31 @@ import EventModal from './components/EventModal';
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 const localizer = momentLocalizer(moment);
-
+let newCalendarInformation
 function Calendario (){
-    const [eventos, setEventos] = useState(eventosPadrao)
+    
+
+      // Recupera os dados do servidor quando o componente é montado
+    useEffect(() => {
+        const fetchData = async () => {
+        try {
+            const calendar_id = localStorage.getItem('calendar_id');
+            const response = await axios.get(`http://localhost:3030/users/calendar/${calendar_id}`);
+            const { calendarInformation} = response.data;
+            newCalendarInformation = calendarInformation
+            console.log('calendarInformation-----------', calendarInformation)
+            // Armazenar no localStorage se necessário
+            localStorage.setItem('schedulesCreated', JSON.stringify(calendarInformation));
+            setEventos(calendarInformation)
+        } catch (error) {
+            console.error('Error fetching calendars:', error);
+        }
+        };
+
+        fetchData();
+    }, []);
+
+    const [eventos, setEventos] = useState(newCalendarInformation)
     const [eventoSelecionado, setEventoSelecionado] = useState(null);
 
     const handleEventClick = (evento) => {
@@ -39,14 +61,17 @@ function Calendario (){
         const calendar_id = localStorage.getItem('calendar_id');
         const token = localStorage.getItem('token');
         console.log('antes do post ------------', user_id)
-        console.log('antes do post calendar_id------------', calendar_id)
-        const response = await axios.post(`http://localhost:3030/users/updateCalendar/${calendar_id}`, {
+        console.log('antes do post novoEvento------------', novoEvento)
+        const response = await axios.put(`http://localhost:3030/users/updateCalendar/${calendar_id}`, {
             calendarInformation:[{
-                user: user_id,
-                name: 'nome do usuário',
-                firstDay: novoEvento.startDate,
-                lastDay: novoEvento.endDate,
-                status: 'novoEvento.color'
+                id: 1,
+                title:'atividade 1',
+                start: novoEvento.start,
+                end: novoEvento.end,
+                desc:'primeira atividade',
+                color:'red',
+                type:'atividade',
+                user_id
             }]
         });
         console.log('post response ------------', response)
