@@ -15,8 +15,14 @@ const Login = () => {
       setMessage('Login successful');
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user_id', response.data.user_id);
-      localStorage.setItem('schedulesCreated', response.data.schedulesCreated);
-      localStorage.setItem('schedulesJoined', response.data.schedulesJoined);
+      localStorage.setItem('schedulesCreated', JSON.stringify(response.data.schedulesCreated));
+      localStorage.setItem('schedulesJoined', JSON.stringify(response.data.schedulesJoined));
+      console.log('response.data.schedulesCreated--------in login-', response.data.schedulesCreated)
+      const created = localStorage.getItem('schedulesCreated');
+      console.log('created--------in login-', created)
+      console.log('typeof created--------in login-', typeof created)
+      
+      console.log('JSON.parse(created)--------in login-', JSON.parse(created))
       console.log('response', response.data)
       history.push('/CreateAgenda'); // Adicione esta linha
     } catch (error) {

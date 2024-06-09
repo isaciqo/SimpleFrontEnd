@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import './Calendars.css'; // Certifique-se de criar e importar o arquivo CSS
 
 const Calendars = () => {
   const [schedulesCreated, setSchedulesCreated] = useState([]);
@@ -9,25 +10,21 @@ const Calendars = () => {
   const [newCalendarDescription, setNewCalendarDescription] = useState('');
   const history = useHistory();
 
-
-  // Recupera os dados do localStorage quando o componente é montado
   useEffect(() => {
     const created = localStorage.getItem('schedulesCreated');
     const joined = localStorage.getItem('schedulesJoined');
 
     if (created) {
-      setSchedulesCreated(created.split(','));
+      console.log('created----------------', created)
+      setSchedulesCreated(JSON.parse(created));
     }
 
     if (joined) {
-      setSchedulesJoined(joined.split(','));
+      setSchedulesJoined(JSON.parse(joined));
     }
   }, []);
 
-  // Função para lidar com a criação de um novo calendário
-  const  handleCreateCalendar =  async () => {
-    // Implemente a lógica para enviar os dados do novo calendário para o servidor
-    // e atualizar os dados do localStorage conforme necessário
+  const handleCreateCalendar = async () => {
     const user_id = localStorage.getItem('user_id');
     const newCalendar = {
       name: newCalendarName,
@@ -44,10 +41,15 @@ const Calendars = () => {
     } catch (error) {
       console.error('Error creating calendar:', error);
     }
-    history.push('/Calendario'); // Adicione esta linha
-    // Resetar os campos de input
+    history.push('/Calendario');
     setNewCalendarName('');
     setNewCalendarDescription('');
+  };
+
+  const handleCalendarClick = (calendar) => {
+    console.log('calendar--in handleCalendarClick--------------', calendar)
+    localStorage.setItem('calendar_id', calendar.calendar_id);
+    history.push('/Calendario');
   };
 
   return (
@@ -57,11 +59,17 @@ const Calendars = () => {
       <div>
         <h2>Schedules Created</h2>
         {schedulesCreated.length > 0 ? (
-          <ul>
+          <div className="calendar-grid">
             {schedulesCreated.map((calendar, index) => (
-              <li key={index}>{calendar}</li>
+              <div 
+                key={index}
+                className="calendar-square" 
+                onClick={() => handleCalendarClick(calendar)}
+              >
+                {calendar.name}
+              </div>
             ))}
-          </ul>
+          </div>
         ) : (
           <p>No schedules created</p>
         )}
@@ -70,11 +78,17 @@ const Calendars = () => {
       <div>
         <h2>Schedules Joined</h2>
         {schedulesJoined.length > 0 ? (
-          <ul>
+          <div className="calendar-grid">
             {schedulesJoined.map((calendar, index) => (
-              <li key={index}>{calendar}</li>
+              <div 
+                key={index} 
+                className="calendar-square" 
+                onClick={() => handleCalendarClick(calendar.id)}
+              >
+                {calendar.name}
+              </div>
             ))}
-          </ul>
+          </div>
         ) : (
           <p>No schedules joined</p>
         )}
