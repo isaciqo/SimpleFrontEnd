@@ -10,7 +10,8 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:3030/users/create', { name, email, senha });
+      console.log('mandando para sever com o nome', name)
+      await axios.post('http://localhost:3030/create', { name, email, senha });
       setMessage('Registration successful');
     } catch (error) {
       setMessage('Registration failed');

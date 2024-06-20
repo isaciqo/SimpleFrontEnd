@@ -24,7 +24,7 @@ function Calendario (){
         const fetchData = async () => {
         try {
             const calendar_id = localStorage.getItem('calendar_id');
-            const response = await axios.get(`http://localhost:3030/users/calendar/${calendar_id}`);
+            const response = await axios.get(`http://localhost:3030/calendar/${calendar_id}`);
             const { calendarInformation} = response.data;
             newCalendarInformation = calendarInformation
             console.log('calendarInformation-----------', calendarInformation)
@@ -62,7 +62,7 @@ function Calendario (){
         const token = localStorage.getItem('token');
         console.log('antes do post ------------', user_id)
         console.log('antes do post novoEvento------------', novoEvento)
-        const response = await axios.put(`http://localhost:3030/users/updateCalendar/${calendar_id}`, {
+        const response = await axios.put(`http://localhost:3030/updateCalendar/${calendar_id}`, {
             calendarInformation:[{
                 id: 1,
                 title:'atividade 1',

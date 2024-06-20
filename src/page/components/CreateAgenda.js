@@ -35,7 +35,7 @@ const Calendars = () => {
     };
     console.log('Creating calendar:', newCalendar); 
     try {
-      const response = await axios.post('http://localhost:3030/users/createCalendar', newCalendar);
+      const response = await axios.post('http://localhost:3030/createCalendar', newCalendar);
       console.log('Calendar created successfully:', response.data);
       localStorage.setItem('calendar_id', response.data.calendar_id);
     } catch (error) {

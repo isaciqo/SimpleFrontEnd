@@ -11,7 +11,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3030/users/login', { email, senha });
+      const response = await axios.post('http://localhost:3030/login', { email, senha });
       setMessage('Login successful');
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user_id', response.data.user_id);
