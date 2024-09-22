@@ -1,136 +1,225 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom'; // Para redirecionamento
+import './Signup.css'; // você pode adicionar estilos customizados aqui
+import logo from '../../Assets/Logo.png';
+import googleIcon from '../../Assets/googleIcon.png';
+import telaMenu from '../../Assets/telaMenu.png';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
-  const [senha, setsenha] = useState('');
+  const [senha, setSenha] = useState('');
   const [message, setMessage] = useState('');
-  const history = useHistory(); // Adicione esta linha
+  const [showPassword, setShowPassword] = useState(false);
+  const history = useHistory(); // Para redirecionar
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:3030/login', { email, senha });
-      setMessage('Login successful');
+      setMessage('Login realizado com sucesso');
+      
+      // Salvando dados no localStorage
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('user_id', response.data.user_id);
       localStorage.setItem('schedulesCreated', JSON.stringify(response.data.schedulesCreated));
       localStorage.setItem('schedulesJoined', JSON.stringify(response.data.schedulesJoined));
-      console.log('response.data.schedulesCreated--------in login-', response.data.schedulesCreated)
-      const created = localStorage.getItem('schedulesCreated');
-      console.log('created--------in login-', created)
-      console.log('typeof created--------in login-', typeof created)
       
-      console.log('JSON.parse(created)--------in login-', JSON.parse(created))
-      console.log('response', response.data)
-      history.push('/CreateAgenda'); // Adicione esta linha
+      // Redirecionando para a página de criação de agenda
+      history.push('/CreateAgenda');
     } catch (error) {
-      setMessage('Login failed');
+       // Captura e exibe a mensagem de erro do servidor no popup
+       if (error.response) {
+        console.log('error.response.data.message', error.response.data.message)
+        toast.error(error.response.data.message || 'Erro no servidor');
+      } else {
+        toast.error('Erro de conexão. Tente novamente mais tarde.');
+      }
     }
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
+    <div className="signup-container">
+      {/* Componente para exibir os popups */}
+      <ToastContainer />
+
+      {/* Lado esquerdo com a imagem e o logo */}
+      <div className="left-side">
+        <img src={logo} alt="Site Logo" className="logo" />
+        <img src={telaMenu} alt="Site Features" className="features-image" />
+      </div>
+
+      {/* Lado direito com o formulário de login */}
+      <div className="right-side">
+        <h2>Log in</h2>
+        <button className="google-btn">
+          <img src={googleIcon} alt="Google Icon" /> Entrar com Google
+        </button>
+
+        <form className="signup-form" onSubmit={handleSubmit}>
           <input
             type="email"
+            placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
-        </div>
-        <div>
-          <label>senha:</label>
-          <input
-            type="senha"
-            value={senha}
-            onChange={(e) => setsenha(e.target.value)}
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-      {message && <p>{message}</p>}
+
+          <div className="password-container">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Senha"
+              value={senha}
+              onChange={(e) => setSenha(e.target.value)}
+              required
+              className="password-input"
+            />
+            <span className="toggle-password" onClick={togglePasswordVisibility}>
+              {showPassword ? '🙈' : '👁️'}
+            </span>
+          </div>
+
+          <button type="submit" className="signup-btn">Log in</button>
+        </form>
+
+        {message && <p>{message}</p>}
+
+        <p className="Register-text">
+          Primeira vez? <a href="/Register" className="register-link">Cadastre-se</a>
+        </p>
+      </div>
     </div>
   );
 };
 
 export default Login;
+
+
+
 // import React, { useState } from 'react';
-// import styled from 'styled-components';
-
-// const Container = styled.div`
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   height: 100vh;
-//   background-color: #f0f0f0;
-// `;
-
-// const Box = styled.div`
-//   background: white;
-//   border-radius: 10px;
-//   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-//   padding: 40px;
-//   width: 300px;
-//   text-align: center;
-// `;
-
-// const Title = styled.h2`
-//   margin-bottom: 20px;
-// `;
-
-// const Input = styled.input`
-//   width: 100%;
-//   padding: 10px;
-//   margin: 10px 0;
-//   border: 1px solid #ccc;
-//   border-radius: 5px;
-// `;
-
-// const Button = styled.button`
-//   width: 100%;
-//   padding: 10px;
-//   margin: 10px 0;
-//   border: none;
-//   background-color: #007bff;
-//   color: white;
-//   border-radius: 5px;
-//   cursor: pointer;
-//   font-size: 16px;
-// `;
-
-// const SwitchText = styled.p`
-//   cursor: pointer;
-//   color: #007bff;
-// `;
+// import './Signup.css'; // você pode adicionar estilos customizados aqui
+// import logo from '../../Assets/Logo.png';
+// import googleIcon from '../../Assets/googleIcon.png';
+// import telaMenu from '../../Assets/telaMenu.png';
 
 // const Login = () => {
-//   const [isLogin, setIsLogin] = useState(true);
+//   const [showPassword, setShowPassword] = useState(false);
 
-//   const toggleForm = () => {
-//     setIsLogin(!isLogin);
+//   const togglePasswordVisibility = () => {
+//     setShowPassword(!showPassword);
 //   };
 
 //   return (
-//     <Container>
-//       <Box>
-//         <Title>{isLogin ? 'Login' : 'Cadastrar'}</Title>
-//         <form>
-//           {!isLogin && (
-//             <Input type="text" placeholder="Nome" required />
-//           )}
-//           <Input type="email" placeholder="Email" required />
-//           <Input type="password" placeholder="Senha" required />
-//           <Button type="submit">{isLogin ? 'Entrar' : 'Cadastrar'}</Button>
+//     <div className="signup-container">
+//       {/* Lado esquerdo com a imagem e o logo */}
+//       <div className="left-side">
+//         <img src={logo} alt="Site Logo" className="logo" />
+//         <img src={telaMenu} alt="Site Features" className="features-image" />
+//       </div>
+
+//       {/* Lado direito com o formulário de criação de conta */}
+//       <div className="right-side">
+//         <h2>Crie uma conta</h2>
+//         <button className="google-btn">
+//           <img src={googleIcon} alt="Google Icon" /> Entrar com Google
+//         </button>
+
+//         <form className="signup-form">
+//           <input type="email" placeholder="Email" required />
+
+//           <div className="password-container">
+//             <input
+//               type={showPassword ? 'text' : 'password'}
+//               placeholder="Senha"
+//               required
+//               className="password-input"
+//             />
+//             <span className="toggle-password" onClick={togglePasswordVisibility}>
+//               {showPassword ? '🙈' : '👁️'}
+//             </span>
+//           </div>
+
+//           <button type="submit" className="signup-btn">Log in</button>
 //         </form>
-//         <SwitchText onClick={toggleForm}>
-//           {isLogin ? 'Não tem uma conta? Cadastre-se' : 'Já tem uma conta? Faça login'}
-//         </SwitchText>
-//       </Box>
-//     </Container>
+
+//         <p className="Register-text">
+//           Primeira vez? <a href="/Register" className="register-link">Log in</a>
+//         </p>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Login;
+
+
+
+
+
+
+
+// import React, { useState } from 'react';
+// import axios from 'axios';
+// import { useHistory } from 'react-router-dom';
+
+// const Login = () => {
+//   const [email, setEmail] = useState('');
+//   const [senha, setsenha] = useState('');
+//   const [message, setMessage] = useState('');
+//   const history = useHistory(); // Adicione esta linha
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+//     try {
+//       const response = await axios.post('http://localhost:3030/login', { email, senha });
+//       setMessage('Login successful');
+//       localStorage.setItem('token', response.data.token);
+//       localStorage.setItem('user_id', response.data.user_id);
+//       localStorage.setItem('schedulesCreated', JSON.stringify(response.data.schedulesCreated));
+//       localStorage.setItem('schedulesJoined', JSON.stringify(response.data.schedulesJoined));
+//       console.log('response.data.schedulesCreated--------in login-', response.data.schedulesCreated)
+//       const created = localStorage.getItem('schedulesCreated');
+//       console.log('created--------in login-', created)
+//       console.log('typeof created--------in login-', typeof created)
+      
+//       console.log('JSON.parse(created)--------in login-', JSON.parse(created))
+//       console.log('response', response.data)
+//       history.push('/CreateAgenda'); // Adicione esta linha
+//     } catch (error) {
+//       setMessage('Login failed');
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <h2>Login</h2>
+//       <form onSubmit={handleSubmit}>
+//         <div>
+//           <label>Email:</label>
+//           <input
+//             type="email"
+//             value={email}
+//             onChange={(e) => setEmail(e.target.value)}
+//           />
+//         </div>
+//         <div>
+//           <label>senha:</label>
+//           <input
+//             type="senha"
+//             value={senha}
+//             onChange={(e) => setsenha(e.target.value)}
+//           />
+//         </div>
+//         <button type="submit">Login</button>
+//       </form>
+//       {message && <p>{message}</p>}
+//     </div>
 //   );
 // };
 

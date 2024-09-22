@@ -1,0 +1,109 @@
+/* Estilo do cabeçalho */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #4a90e2;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Botão "Create" */
+  .create-button {
+    display: flex;
+    align-items: center;
+    background-color: #4caf50; /* Cor verde */
+    color: white;
+    border: none;
+    border-radius: 50px; /* Bordas circulares */
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+  }
+  
+  .create-button:hover {
+    background-color: #45a049;
+  }
+  
+  .plus-icon {
+    margin-right: 5px;
+  }
+  
+  /* Botão de toggle (▲ ou ▼) */
+  .toggle-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  
+  /* Estilos do modal */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro */
+    z-index: 999;
+    z-index: 999; /* Certifica-se que o overlay fica sobre o conteúdo */
+  }
+  
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1000;
+    width: 300px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    z-index: 1000; /* O modal está sobre o overlay */
+  }
+  
+  .modal h3 {
+    margin-bottom: 20px;
+  }
+  
+  .modal-input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  /* Botão de criação dentro do modal */
+  .create-modal-button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .create-modal-button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Botão de fechar (X) no modal */
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #555;
+  }
+  

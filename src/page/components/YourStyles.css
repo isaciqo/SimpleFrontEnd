@@ -1,0 +1,94 @@
+.calendar-square {
+  position: relative;
+  width: 300px;
+  height: 120px;
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+  justify-content: space-between; /* Garante que o texto e ícones fiquem nas extremidades */
+}
+
+.calendar-square:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilo para o retângulo no lado esquerdo */
+.calendar-rectangle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 10px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+/* Azul para calendários criados */
+.calendar-rectangle.created {
+  background-color: #4a90e2; /* Azul para criados */
+}
+
+/* Laranja para calendários joined */
+.calendar-rectangle.joined {
+  background-color: #ff9029; /* Laranja para entrados */
+}
+
+.text-content {
+  margin-left: 15px;
+  text-align: left; /* Garante que o texto seja alinhado à esquerda */
+  flex-grow: 1; /* Ocupará o espaço restante disponível */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around; /* Distribui o texto verticalmente */
+}
+
+.text-content .title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.text-content .subtitle {
+  font-size: 14px;
+  color: #666;
+  margin-top: 5px;
+}
+
+.text-content .date {
+  font-size: 12px;
+  color: #999;
+  margin-top: 5px;
+}
+
+.icons-container {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-circle {
+  background-color: #f0f0f0;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.icon-circle:hover {
+  background-color: #e0e0e0;
+}
+
+.icon {
+  font-size: 16px;
+  color: #666;
+}

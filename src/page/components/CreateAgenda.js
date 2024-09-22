@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import './Calendars.css'; // Certifique-se de criar e importar o arquivo CSS
+import './YourStyles.css'; 
+import './CalendarSection.css'; // Importar o CSS
+import CalendarSquare from './CalendarSquare'; // O componente estilizado de calendar
+import { FaChevronDown, FaChevronUp, FaPlus, FaTimes } from 'react-icons/fa'; // Ícones para abrir/fechar
 
 const Calendars = () => {
   const [schedulesCreated, setSchedulesCreated] = useState([]);
@@ -9,6 +13,31 @@ const Calendars = () => {
   const [newCalendarName, setNewCalendarName] = useState('');
   const [newCalendarDescription, setNewCalendarDescription] = useState('');
   const history = useHistory();
+  const [isExpandedCreated, setIsExpandedCreated] = useState(true);
+  const [isExpandedJoined, setIsExpandedJoined] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado do modal
+
+  const toggleSectionCreated = () => {
+    setIsExpandedCreated(!isExpandedCreated);
+  };
+
+  const toggleSectionJoined = () => {
+    setIsExpandedJoined(!isExpandedJoined);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCreate = () => {
+    console.log('createButton pressed');
+    closeModal(); // Fechar o modal após o clique no botão "Create"
+  };
+
 
   useEffect(() => {
     const created = localStorage.getItem('schedulesCreated');
@@ -56,43 +85,83 @@ const Calendars = () => {
     <div>
       <h1>Calendars</h1>
 
+
       <div>
-        <h2>Schedules Created</h2>
-        {schedulesCreated.length > 0 ? (
+      {/* Schedules Created */}
+      <div>
+        <div className="section-title">
+          <h2>Schedules Created </h2>
+          <button className="create-button" onClick={openModal}>
+          <FaPlus className="plus-icon" /> Create
+        </button>
+          <button className="toggle-button" onClick={toggleSectionCreated}>
+          {isExpandedCreated ? <FaChevronUp /> : <FaChevronDown />}
+          </button>
+        </div>
+
+        {isExpandedCreated && (
           <div className="calendar-grid">
-            {schedulesCreated.map((calendar, index) => (
-              <div 
-                key={index}
-                className="calendar-square" 
-                onClick={() => handleCalendarClick(calendar)}
-              >
-                {calendar.name}
-              </div>
-            ))}
+            {schedulesCreated.length > 0 ? (
+              schedulesCreated.map((calendar, index) => (
+                <CalendarSquare
+                  key={index}
+                  calendar={calendar}
+                  isJoined={false} // Calendários criados
+                  onClick={() => handleCalendarClick(calendar)}
+                />
+              ))
+            ) : (
+              <p>No schedules created</p>
+            )}
           </div>
-        ) : (
-          <p>No schedules created</p>
         )}
       </div>
 
-      <div>
-        <h2>Schedules Joined</h2>
-        {schedulesJoined.length > 0 ? (
+      {/* Schedules Joined */}
+      <div style={{ marginTop: '20px' }}>
+        <div className="section-title">
+          <h2>Schedules Joined</h2>
+          <button className="toggle-button" onClick={toggleSectionJoined}>
+          {isExpandedJoined ? <FaChevronUp /> : <FaChevronDown />}
+          </button>
+        </div>
+
+        {isExpandedJoined && (
           <div className="calendar-grid">
-            {schedulesJoined.map((calendar, index) => (
-              <div 
-                key={index} 
-                className="calendar-square" 
-                onClick={() => handleCalendarClick(calendar.id)}
-              >
-                {calendar.name}
-              </div>
-            ))}
+            {schedulesJoined.length > 0 ? (
+              schedulesJoined.map((calendar, index) => (
+                <CalendarSquare
+                  key={index}
+                  calendar={calendar}
+                  isJoined={true} // Calendários joined                  
+                  onClick={() => handleCalendarClick(calendar)}
+                />
+              ))
+            ) : (
+              <p>No schedules joined</p>
+            )}
           </div>
-        ) : (
-          <p>No schedules joined</p>
         )}
+
+        {/* Modal de criação */}
+      {isModalOpen && (
+        <>
+          {/* <div className="modal-overlay"></div> Overlay escuro */}
+          <div className="modal">
+            <button className="close-button" onClick={closeModal}>
+              <FaTimes />
+            </button>
+            <h3>Create New Calendar</h3>
+            <input type="text" placeholder="Name" className="modal-input" />
+            <input type="text" placeholder="Description" className="modal-input" />
+            <button className="create-modal-button" onClick={handleCreate}>Create</button>
+          </div>
+        </>
+      )}
       </div>
+    </div>
+
+    
 
       <div>
         <h2>Create New Calendar</h2>
