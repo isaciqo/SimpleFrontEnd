@@ -48,8 +48,13 @@
 
 .section-title {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: center; /* Centraliza verticalmente o conteúdo */
+  justify-content: space-between; /* Deixa o conteúdo à esquerda e o toggle à direita */
+}
+
+.left-content {
+  display: flex;
+  align-items: center; /* Alinha verticalmente o texto e o botão "Create" */
 }
 
 .hidden {

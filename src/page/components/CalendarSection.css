@@ -14,33 +14,43 @@
   .create-button {
     display: flex;
     align-items: center;
-    background-color: #4caf50; /* Cor verde */
+    background-color: #6D31ED; 
     color: white;
     border: none;
     border-radius: 50px; /* Bordas circulares */
-    padding: 10px 20px;
+    padding: 5px 15px; /* Ajuste para melhor alinhamento */
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s;
+    margin-left: 10px; /* Espaçamento entre o título e o botão */
   }
   
   .create-button:hover {
-    background-color: #45a049;
+    background-color: #5726c0;
   }
   
   .plus-icon {
     margin-right: 5px;
   }
   
-  /* Botão de toggle (▲ ou ▼) */
-  .toggle-button {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 18px;
+
+  .events-button {
+    background-color: transparent;
+    color: #6D31ED; 
+    border: 2px solid #6D31ED; ;
+    border-radius: 50px;
+    padding: 5px 15px;
     cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, color 0.3s;
+    margin-left: 10px; /* Espaçamento entre o título e o botão */
   }
   
+  .events-button:hover {
+    background-color: #5726c0;
+    color: white;
+  }
+
   /* Estilos do modal */
   .modal-overlay {
     position: fixed;
@@ -49,11 +59,10 @@
     right: 0;
     bottom: 0;
     background-color: rgba(0, 0, 0, 0.7); /* Fundo escuro */
-    z-index: 999;
-    z-index: 999; /* Certifica-se que o overlay fica sobre o conteúdo */
+    z-index: 1000; /* Certifica-se que o overlay fica sobre o conteúdo */
   }
   
-  .modal {
+  .modal-box {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -61,17 +70,12 @@
     background-color: white;
     padding: 20px;
     border-radius: 10px;
-    z-index: 1000;
+    z-index: 1000; /* O modal está sobre o overlay */
     width: 300px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
-    z-index: 1000; /* O modal está sobre o overlay */
   }
-  
-  .modal h3 {
-    margin-bottom: 20px;
-  }
-  
+
   .modal-input {
     display: block;
     width: 100%;
