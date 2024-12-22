@@ -20,6 +20,24 @@ const Calendars = () => {
   const [eventCountJoined, setEventCountJoined] = useState(0); // Estado para o número de eventos
 
 
+
+
+  const handlePageReload = async () => {
+    const user_id = localStorage.getItem('user_id');
+    try {
+      const response = await axios.get(`http://localhost:3030/user/${user_id}`);
+      console.log('Calendar  geted successfully:', response.data);
+      localStorage.setItem('schedulesCreated', JSON.stringify(response.data.schedulesCreated));
+      localStorage.setItem('schedulesJoined', JSON.stringify(response.data.schedulesJoined));
+    } catch (error) {
+      console.error('Error creating calendar:', error);
+    }
+
+    setNewCalendarName('');
+    setNewCalendarDescription('');
+  };
+
+
   const toggleSectionCreated = () => {
     setIsExpandedCreated(!isExpandedCreated);
   };
@@ -43,9 +61,11 @@ const Calendars = () => {
 
 
   useEffect(() => {
+
+    handlePageReload();
     const created = localStorage.getItem('schedulesCreated');
     const joined = localStorage.getItem('schedulesJoined');
-
+    
     if (created) {
       console.log('created----------------', created)
       setEventCountCreated(JSON.parse(created).length)
@@ -72,12 +92,13 @@ const Calendars = () => {
       const response = await axios.post('http://localhost:3030/createCalendar', newCalendar);
       console.log('Calendar created successfully:', response.data);
       localStorage.setItem('calendar_id', response.data.calendar_id);
+      history.push('/Calendario');
+      setNewCalendarName('');
+      setNewCalendarDescription('');
     } catch (error) {
       console.error('Error creating calendar:', error);
     }
-    history.push('/Calendario');
-    setNewCalendarName('');
-    setNewCalendarDescription('');
+    
   };
 
   const handleCalendarClick = (calendar) => {
@@ -186,9 +207,27 @@ const Calendars = () => {
               <FaTimes />
             </button>
             <h3>Create New Calendar</h3>
-            <input type="text" placeholder="Name" className="modal-input" />
-            <input type="text" placeholder="Description" className="modal-input" />
-            <button className="create-modal-button" onClick={handleCreate}>Create</button>
+             <form onSubmit={(e) => {
+            e.preventDefault();
+            handleCreateCalendar();
+            }}>
+            <input 
+              type="text"
+              placeholder="Name"
+              className="modal-input" 
+              onChange={(e) => setNewCalendarName(e.target.value)}
+              required
+            />
+            <input 
+             type="text" 
+             placeholder="Description" 
+             className="modal-input"
+             onChange={(e) => setNewCalendarDescription(e.target.value)} 
+             required 
+            />
+            <button className="create-modal-button" type="submit">Create Calendar</button>
+            {/* <button className="create-modal-button" onClick={handleCreateCalendar}>Create</button> */}
+          </form>
           </div> 
         </>
       )}
