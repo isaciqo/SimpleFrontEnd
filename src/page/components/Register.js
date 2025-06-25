@@ -10,9 +10,9 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
   const [name, setName] = useState('');
-  const [apelido, setApelido] = useState('');
+  const [nick_name, setNickName] = useState('');
   const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState('');
   const history = useHistory(); // Para redirecionar
@@ -23,18 +23,19 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let response
+    
     try {
-      console.log('Enviando para o servidor:', { name, apelido, email, senha });
-      response = await axios.post('http://localhost:3030/create', { name, email, senha });
+      console.log('Enviando para o servidor:', { name, nick_name, email, password });
+      const response = await axios.post('http://localhost:3030/create', { name, email, password, nick_name });
       console.log('response------', response);
       setMessage('Cadastro realizado com sucesso');
 
       history.push('/Login');
     } catch (error) {
        // Captura e exibe a mensagem de erro do servidor no popup
+       console.log('error', error.response)
        if (error.response) {
-        console.log('error.response.data.message', error.response.data.message)
+        console.log('error', error)
         toast.error(error.response.data.message || 'Erro no servidor');
       } else {
         toast.error('Erro de conexão. Tente novamente mais tarde.');
@@ -71,9 +72,9 @@ const Register = () => {
           <div>
             <input
               type="text"
-              placeholder="Apelido"
-              value={apelido}
-              onChange={(e) => setApelido(e.target.value)}
+              placeholder="NickName"
+              value={nick_name}
+              onChange={(e) => setNickName(e.target.value)}
               required
             />
           </div>
@@ -89,9 +90,9 @@ const Register = () => {
           <div className="password-container">
             <input
               type={showPassword ? 'text' : 'password'}
-              placeholder="Senha"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
               className="password-input"
             />

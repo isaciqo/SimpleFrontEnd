@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
+  const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const history = useHistory(); // Para redirecionar
@@ -22,7 +22,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3030/login', { email, senha });
+      const response = await axios.post('http://localhost:3030/login', { email, password });
       setMessage('Login realizado com sucesso');
       
       // Salvando dados no localStorage
@@ -36,7 +36,7 @@ const Login = () => {
     } catch (error) {
        // Captura e exibe a mensagem de erro do servidor no popup
        if (error.response) {
-        console.log('error.response.data.message', error.response.data.message)
+        console.log('error.response.data.message', error)
         toast.error(error.response.data.message || 'Erro no servidor');
       } else {
         toast.error('Erro de conexão. Tente novamente mais tarde.');
@@ -74,9 +74,9 @@ const Login = () => {
           <div className="password-container">
             <input
               type={showPassword ? 'text' : 'password'}
-              placeholder="Senha"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
               className="password-input"
             />
@@ -136,7 +136,7 @@ export default Login;
 //           <div className="password-container">
 //             <input
 //               type={showPassword ? 'text' : 'password'}
-//               placeholder="Senha"
+//               placeholder="Password"
 //               required
 //               className="password-input"
 //             />
@@ -170,14 +170,14 @@ export default Login;
 
 // const Login = () => {
 //   const [email, setEmail] = useState('');
-//   const [senha, setsenha] = useState('');
+//   const [password, setPassword] = useState('');
 //   const [message, setMessage] = useState('');
 //   const history = useHistory(); // Adicione esta linha
 
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
 //     try {
-//       const response = await axios.post('http://localhost:3030/login', { email, senha });
+//       const response = await axios.post('http://localhost:3030/login', { email, password });
 //       setMessage('Login successful');
 //       localStorage.setItem('token', response.data.token);
 //       localStorage.setItem('user_id', response.data.user_id);
@@ -209,11 +209,11 @@ export default Login;
 //           />
 //         </div>
 //         <div>
-//           <label>senha:</label>
+//           <label>password:</label>
 //           <input
-//             type="senha"
-//             value={senha}
-//             onChange={(e) => setsenha(e.target.value)}
+//             type="password"
+//             value={password}
+//             onChange={(e) => setPassword(e.target.value)}
 //           />
 //         </div>
 //         <button type="submit">Login</button>
