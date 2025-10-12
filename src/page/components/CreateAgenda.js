@@ -25,7 +25,7 @@ const Calendars = () => {
   const handlePageReload = async () => {
     const user_id = localStorage.getItem('user_id');
     try {
-      const response = await axios.get(`http://localhost:3030/user/${user_id}`);
+      const response = await axios.get(`https://express-auth-hexagonal-boilerplate.onrender.com/user/${user_id}`);
       console.log('Calendar  geted successfully:', response.data);
       localStorage.setItem('schedulesCreated', JSON.stringify(response.data.schedulesCreated));
       localStorage.setItem('schedulesJoined', JSON.stringify(response.data.schedulesJoined));
@@ -89,7 +89,7 @@ const Calendars = () => {
     };
     console.log('Creating calendar:', newCalendar); 
     try {
-      const response = await axios.post('http://localhost:3030/createCalendar', newCalendar);
+      const response = await axios.post('https://express-auth-hexagonal-boilerplate.onrender.com/createCalendar', newCalendar);
       console.log('Calendar created successfully:', response.data);
       localStorage.setItem('calendar_id', response.data.calendar_id);
       history.push('/Calendario');

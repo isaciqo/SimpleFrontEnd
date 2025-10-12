@@ -12,7 +12,7 @@ const CreateSchedule = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:3030/createCalendar', {
+      const response = await axios.post('https://express-auth-hexagonal-boilerplate.onrender.com/createCalendar', {
         name,
         email,
         startDate,
