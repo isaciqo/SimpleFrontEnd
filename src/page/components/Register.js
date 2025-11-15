@@ -26,7 +26,7 @@ const Register = () => {
     
     try {
       console.log('Enviando para o servidor:', { name, nick_name, email, password });
-      const response = await axios.post('http://localhost:3030/create', { name, email, password, nick_name });
+      const response = await axios.post('https://express-auth-hexagonal-boilerplate.onrender.com/create', { name, email, password, nick_name });
       console.log('response------', response);
       setMessage('Cadastro realizado com sucesso');
 
