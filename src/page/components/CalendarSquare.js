@@ -1,5 +1,6 @@
 import React from 'react';
 import { FaTrash, FaEdit } from 'react-icons/fa'; // Ícones
+import axios from 'axios';
 
 const CalendarSquare = ({ calendar, onClick, isJoined }) => {
 
@@ -8,8 +9,13 @@ const CalendarSquare = ({ calendar, onClick, isJoined }) => {
     console.log("Edit icon clicked");
   };
 
-  const handleDeleteClick = (e) => {
+  const handleDeleteClick = async (e) => {
     e.stopPropagation(); // Impede que o clique no ícone dispare o clique no quadrado principal
+    const body = {
+      user_id: localStorage.getItem('user_id')
+    }
+    const response = await axios.delete(`http://localhost:3030/deleteSchedules/${calendar.calendar_id}`, body);
+    console.log('Calendar joineed successfully:', calendar.calendar_id);
     console.log("Delete icon clicked");
   };
 

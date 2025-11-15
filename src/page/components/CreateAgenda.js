@@ -6,16 +6,20 @@ import './YourStyles.css';
 import './CalendarSection.css'; // Importar o CSS
 import CalendarSquare from './CalendarSquare'; // O componente estilizado de calendar
 import { FaChevronDown, FaChevronUp, FaPlus, FaTimes } from 'react-icons/fa'; // Ícones para abrir/fechar
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Calendars = () => {
   const [schedulesCreated, setSchedulesCreated] = useState([]);
   const [schedulesJoined, setSchedulesJoined] = useState([]);
   const [newCalendarName, setNewCalendarName] = useState('');
+  const [joinCalendarId, setCalendarId] = useState('');
   const [newCalendarDescription, setNewCalendarDescription] = useState('');
   const history = useHistory();
   const [isExpandedCreated, setIsExpandedCreated] = useState(true);
   const [isExpandedJoined, setIsExpandedJoined] = useState(true);
-  const [isModalOpen, setIsModalOpen] = useState(false); // Estado do modal
+  const [isCreateSchedulesModalOpen, setIsCreateSchedulesModalOpen] = useState(false); // Estado do modal
+  const [isJoinSchedulesModalOpen, setIsJoinSchedulesModalOpen] = useState(false); // Estado do modal
   const [eventCountCreated, setEventCountCreated] = useState(0); // Estado para o número de eventos
   const [eventCountJoined, setEventCountJoined] = useState(0); // Estado para o número de eventos
 
@@ -46,19 +50,21 @@ const Calendars = () => {
     setIsExpandedJoined(!isExpandedJoined);
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const openCreateModal = () => {
+    setIsCreateSchedulesModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const openJoinModal = () => {
+    setIsJoinSchedulesModalOpen(true);
   };
 
-  const handleCreate = () => {
-    console.log('createButton pressed');
-    closeModal(); // Fechar o modal após o clique no botão "Create"
+  const closeCreateModal = () => {
+    setIsCreateSchedulesModalOpen(false);
   };
 
+  const closeJoinModal = () => {
+    setIsJoinSchedulesModalOpen(false);
+  };
 
   useEffect(() => {
 
@@ -101,6 +107,29 @@ const Calendars = () => {
     
   };
 
+   const handleJoinCalendar = async () => {
+    const user_id = localStorage.getItem('user_id');
+    const body = {
+      user_id
+    };
+
+
+    
+    console.log('Joing calendar:', joinCalendarId); 
+    try {
+      const response = await axios.put(`http://localhost:3030/updateSchedulesJoined/${joinCalendarId}`, body);
+      console.log('Calendar joineed successfully:', response.data);
+      localStorage.setItem('calendar_id', response.data.calendar_id);
+      history.push('/Calendario');
+      setNewCalendarName('');
+      setNewCalendarDescription('');
+    } catch (error) {
+      console.error('Error creating calendar:', error);
+      toast.error(error.response.data.message || `User can't join this schedule`);
+    }
+    
+  };
+
   const handleCalendarClick = (calendar) => {
     console.log('calendar--in handleCalendarClick--------------', calendar)
     localStorage.setItem('calendar_id', calendar.calendar_id);
@@ -110,7 +139,8 @@ const Calendars = () => {
   return (
     <div>
       <h1>Calendars</h1>
-
+      {/* Componente para exibir os popups */}
+      <ToastContainer />
 
       <div>
       {/* Schedules Created */}
@@ -122,7 +152,7 @@ const Calendars = () => {
             <button className="events-button" onClick={toggleSectionCreated}>
               {eventCountCreated} events
             </button>
-            <button className="create-button" onClick={openModal}>
+            <button className="create-button" onClick={openCreateModal}>
               <FaPlus className="plus-icon" /> Create
             </button>
           </div>
@@ -161,7 +191,7 @@ const Calendars = () => {
             <button className="events-button" onClick={toggleSectionCreated}>
               {eventCountJoined} events
             </button>
-            <button className="create-button" onClick={openModal}>
+            <button className="create-button" onClick={openJoinModal}>
               <FaPlus className="plus-icon" /> Join
             </button>
           </div>
@@ -198,12 +228,12 @@ const Calendars = () => {
     </div>
 
     {/* Modal de criação */}
-    {isModalOpen && (
+    {isCreateSchedulesModalOpen && (
         <>
           
           <div className="modal-overlay"></div> Overlay escuro
           <div className = "modal-box">
-            <button className="close-button" onClick={closeModal}>
+            <button className="close-button" onClick={closeCreateModal}>
               <FaTimes />
             </button>
             <h3>Create New Calendar</h3>
@@ -230,39 +260,36 @@ const Calendars = () => {
           </form>
           </div> 
         </>
-      )}
+    )}
 
-      <div>
-        <h2>Create New Calendar</h2>
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          handleCreateCalendar();
-        }}>
-          <div>
-            <label>
-              Name:
-              <input 
-                type="text" 
-                value={newCalendarName} 
-                onChange={(e) => setNewCalendarName(e.target.value)} 
-                required 
-              />
-            </label>
-          </div>
-          <div>
-            <label>
-              Description:
-              <input 
-                type="text" 
-                value={newCalendarDescription} 
-                onChange={(e) => setNewCalendarDescription(e.target.value)} 
-                required 
-              />
-            </label>
-          </div>
-          <button type="submit">Create Calendar</button>
-        </form>
-      </div>
+    {/* Modal de join */}
+    {isJoinSchedulesModalOpen && (
+        <>
+          
+          <div className="modal-overlay"></div> Overlay escuro
+          <div className = "modal-box">
+            <button className="close-button" onClick={closeJoinModal}>
+              <FaTimes />
+            </button>
+            <h3>Join New Calendar</h3>
+             <form onSubmit={(e) => {
+            e.preventDefault();
+            handleJoinCalendar();
+            }}>
+            <input 
+              type="text"
+              placeholder="Calendar ID"
+              className="modal-input" 
+              onChange={(e) => setCalendarId(e.target.value)}
+              required
+            />
+            <button className="create-modal-button" type="submit">Join Calendar</button>
+            {/* <button className="create-modal-button" onClick={handleCreateCalendar}>Create</button> */}
+          </form>
+          </div> 
+        </>
+    )}
+
     </div>
   );
 };
